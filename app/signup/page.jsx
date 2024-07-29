@@ -2,10 +2,9 @@
 
 "use client"
 import { useState, useEffect } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const Signup = () => {
@@ -13,6 +12,7 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
+    const [error, setError] = useState('');
 
     const handleSignup = async (e) => {
         e.preventDefault();
@@ -27,12 +27,30 @@ const Signup = () => {
             setIsRegistered(true);
         } catch (error) {
             console.error("Error during registration:", error);
+            setError('Registration failed. Please try again.');
+        }
+    };
+
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            await setDoc(doc(db, "users", user.uid), {
+                uid: user.uid,
+                username: user.displayName,
+                email: user.email
+            });
+            setIsRegistered(true);
+        } catch (error) {
+            console.error("Error during Google sign-in:", error);
+            setError('Google sign-in failed. Please try again.');
         }
     };
 
     useEffect(() => {
         if (isRegistered) {
-            window.location.href = '/login'; // Redirect to the admin page after signup
+            window.location.href = '/login'; // Redirect to login page after signup
         }
     }, [isRegistered]);
 
@@ -74,14 +92,24 @@ const Signup = () => {
                             required 
                         />
                     </div>
+                    {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                     <button type="submit" className="w-full bg-blue-500 text-white px-3 py-2 rounded-lg">
                         Sign Up
                     </button>
                 </form>
                 <div className="text-center mt-4">
-                 
-                        <a href="/login" className="text-blue-500">Already have an account? Login</a>
-                    
+                    <Link href='/admin'>
+                    <button
+                        onClick={handleGoogleSignIn}
+                        className="flex items-center gap-3 bg-black text-white px-4 py-2 rounded-full w-full justify-center"
+                    >
+                        <img className='h-7' src="/google.png" alt="Google logo" />
+                        Sign in with Google
+                    </button>
+                    </Link>
+                </div>
+                <div className="text-center mt-4">
+                        <a  href="/login" className="text-blue-500">Already have an account? Login</a>
                 </div>
             </div>
         </div>
