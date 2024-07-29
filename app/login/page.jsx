@@ -1,6 +1,5 @@
 // pages/login.js
 
-
 "use client"
 import { useState } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
@@ -10,14 +9,16 @@ import Link from 'next/link';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            // Redirect to home or dashboard after login
+            window.location.href = '/admin'; // Redirect to admin page after successful login
         } catch (error) {
             console.error("Error during login:", error);
+            setError('Incorrect email or password.');
         }
     };
 
@@ -25,9 +26,10 @@ const Login = () => {
         const provider = new GoogleAuthProvider();
         try {
             await signInWithPopup(auth, provider);
-            // Redirect to home or dashboard after Google sign-in
+            window.location.href = '/admin'; // Redirect to admin page after successful Google sign-in
         } catch (error) {
             console.error("Error during Google sign-in:", error);
+            setError('Google sign-in failed.');
         }
     };
 
@@ -58,12 +60,10 @@ const Login = () => {
                             required 
                         />
                     </div>
-                  <Link href="/">
+                    {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                     <button type="submit" className="w-full bg-blue-500 text-white px-3 py-2 rounded-lg">
                         Login
                     </button>
-                    </Link>
-                   
                 </form>
                 <div className="text-center mt-4">
                     <button
@@ -75,7 +75,9 @@ const Login = () => {
                     </button>
                 </div>
                 <div className="text-center mt-4">
-                   
+                  
+                        <a href="/signup" className="text-blue-500">Don't have an account? Sign Up</a>
+                    
                 </div>
             </div>
         </div>

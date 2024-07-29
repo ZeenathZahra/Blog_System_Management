@@ -1,16 +1,18 @@
 // pages/signup.js
 
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isRegistered, setIsRegistered] = useState(false);
 
     const handleSignup = async (e) => {
         e.preventDefault();
@@ -22,11 +24,17 @@ const Signup = () => {
                 username: username,
                 email: email
             });
-            // Redirect to home or dashboard after signup
+            setIsRegistered(true);
         } catch (error) {
             console.error("Error during registration:", error);
         }
     };
+
+    useEffect(() => {
+        if (isRegistered) {
+            window.location.href = '/login'; // Redirect to the admin page after signup
+        }
+    }, [isRegistered]);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -66,15 +74,15 @@ const Signup = () => {
                             required 
                         />
                     </div>
-                    <Link href="/login">
                     <button type="submit" className="w-full bg-blue-500 text-white px-3 py-2 rounded-lg">
                         Sign Up
                     </button>
-                    </Link>
                 </form>
                 <div className="text-center mt-4">
-?                        <a href = "/login" className="text-blue-500"> Already have an account? Login </a>
-\                </div>
+                 
+                        <a href="/login" className="text-blue-500">Already have an account? Login</a>
+                    
+                </div>
             </div>
         </div>
     );
