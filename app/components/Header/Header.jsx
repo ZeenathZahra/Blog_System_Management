@@ -9,7 +9,7 @@ export default function Header() {
             <img className="h-20" src="/logo.png" alt="" />
         </Link>
         <ul className="flex gap-6 items-center">
-            <Link href={'/home'}>
+            <Link href={'/'}>
                 <li className='flex items-center gap-2'>
                     <Home />
                     Home
@@ -28,8 +28,19 @@ export default function Header() {
                 </li>
             </Link>
         </ul>
+        {/* <Link href={'/signup'}>
+       <button
+        // onClick={() => setIsModalOpen(true)}
+        className="flex items-center gap-3 bg-black text-white px-4 py-2 rounded-full" style={{ marginLeft: '75rem' }}>
+
+                    
+                    SignUp
+                </button>
+            </Link> */}
         <AuthContextProvider>
             <LoginButton />
+
         </AuthContextProvider>
+        
     </nav>
 }

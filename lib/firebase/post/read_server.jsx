@@ -11,6 +11,28 @@ export const getAllPostsWithCategory = async (categoryId) => {
 }
 
 
+
 export const getPost = async (id) => {
-    return await getDoc(doc(db, `posts/${id}`)).then((snap) => snap.data());
-}
+    try {
+        const decodedId = decodeURIComponent(id);
+       // console.log("Fetching post with id:", decodedId);
+
+        const postDoc = doc(db, `posts/${decodedId}`);
+        const snap = await getDoc(postDoc);
+
+        const postData = snap.data();
+        //console.log("Fetched post data:", postData);
+
+        if (postData) {
+            console.log("Title:", postData.title);
+        } else {
+            console.error("No data found for the given ID");
+        }
+
+        return postData;
+    } catch (err) {
+        console.error("Error fetching post:", err);
+        throw err;
+    }
+};
+
