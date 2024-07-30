@@ -61,7 +61,7 @@ const Login = () => {
                         />
                     </div>
                     {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-                    <button type="submit" className="w-full bg-blue-500 text-white px-3 py-2 rounded-lg">
+                    <button type="submit" className="w-full bg-black text-white px-3 py-2 rounded-lg">
                         Login
                     </button>
                 </form>
@@ -76,7 +76,7 @@ const Login = () => {
                 </div>
                 <div className="text-center mt-4">
                   
-                        <a href="/signup" className="text-blue-500">Don't have an account? Sign Up</a>
+                        <a href="/signup" className="text-black">Don't have an account? Sign Up</a>
                     
                 </div>
             </div>

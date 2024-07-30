@@ -1,80 +1,3 @@
-// "use client"
-
-// import { useState } from 'react';
-// import { useAuth } from "@/lib/contexts/AuthContext";
-// import Link from 'next/link';
-// import LoginModal from './LoginModal'; // Adjust the import path as necessary
-
-// export default function LoginButton() {
-//     const [isModalOpen, setIsModalOpen] = useState(false);
-
-//     const {
-//         user,
-//         isLoading,
-//         error,
-//         handleSignInWithGoogle,
-//         handleLogout,
-//     } = useAuth();
-
-
-//     if (isLoading) {
-//         return <h1>Loading...</h1>;
-//     }
-
-//     if (user) {
-//         return (
-//             <div className="flex gap-4 items-center">
-//                 <button
-//                     onClick={handleLogout}
-//                     className="flex items-center gap-3 bg-black text-white px-4 py-2 rounded-full"
-//                 >
-//                     Logout
-//                 </button>
-//                 <Link href='/admin'>
-//                     <div className="flex gap-4 rounded-xl bg-blue-100 px-3 py-2">
-//                         <img className="object-cover h-12 w-12 rounded-full" src={user?.photoURL} alt="" />
-//                         <div>
-//                             <h1 className="font-bold">{user?.displayName}</h1>
-//                             <h1 className="text-sm text-gray-500">{user?.email}</h1>
-//                         </div>
-//                     </div>
-//                 </Link>
-//             </div>
-//         );
-//     }
-
-//     return (
-//         <section>
-//             {/* <button
-//                 onClick={() => setIsModalOpen(true)}
-//                 className="flex items-center gap-3 bg-black text-white px-4 py-2 rounded-full"
-//             >
-//                 Login
-//             </button> */}
-
-
-//              <Link href={'/signup'}>
-//             <button
-//                 onClick={() => setIsModalOpen(true)}
-//                 className="flex items-center gap-3 bg-black text-white px-4 py-2 rounded-full" 
-//             >
-//                     SignUp
-//                 </button>
-//             </Link>
-            
-
-//             {/* <LoginModal 
-//                 isOpen={isModalOpen} 
-//                 onClose={() => setIsModalOpen(false)} 
-//                 handleSignInWithGoogle={handleSignInWithGoogle} 
-//             /> */}
-//         </section>
-//     );
-// }
-
-
-// components/LoginButton.js
-
 "use client"
 
 import { useState } from 'react';
@@ -97,16 +20,19 @@ export default function LoginButton() {
             <div className="flex gap-4 items-center">
                 <button
                     onClick={handleLogout}
-                    className="flex items-center gap-3 bg-black text-white px-4 py-2 rounded-full"
+                    className="bg-black hover:bg-black text-white font-bold py-2 px-4 border border-black rounded"
+
                 >
                     Logout
                 </button>
                 <Link href='/admin'>
                     <div className="flex gap-4 rounded-xl bg-blue-100 px-3 py-2">
-                        <img className="object-cover h-12 w-12 rounded-full" src={user?.photoURL} alt="" />
+                        {user.photoURL && (
+                            <img className="object-cover h-12 w-12 rounded-full" src={user.photoURL} alt="User profile" />
+                        )}
                         <div>
-                            <h1 className="font-bold">{user?.displayName}</h1>
-                            <h1 className="text-sm text-gray-500">{user?.email}</h1>
+                            <h1 className="font-bold">{user.displayName || user.email}</h1>
+                            <h1 className="text-sm text-gray-500">{user.email}</h1>
                         </div>
                     </div>
                 </Link>
@@ -115,21 +41,23 @@ export default function LoginButton() {
     }
 
     return (
-        <section>
-            <Link href='/signup'>
-                <button
-                    className="flex items-center gap-3 bg-black text-white px-4 py-2 rounded-full"
-                >
-                    Sign Up
-                </button>
-            </Link>
-            <Link href='/login'>
-                <button
-                    className="flex items-center gap-3 bg-black text-white px-4 py-2 rounded-full"
-                >
-                    Login
-                </button>
-            </Link>
-        </section>
+<section className="flex gap-4">
+    <Link href='/signup' className="flex-8">
+        <button
+            className="bg-black hover:bg-black text-white font-bold py-2 px-4 border border-black rounded"
+        >
+            Sign Up
+        </button>
+    </Link>
+    <Link href='/login' className="flex-8">
+        <button
+            className="bg-transparent hover:bg-black text-black font-semibold hover:text-white py-2 px-4 border border-black hover:border-transparent rounded"
+        >
+            Login
+        </button>
+    </Link>
+</section>
+
+    
     );
 }

@@ -12,7 +12,7 @@ export default async function PostListView() {
             <h3>Posts Not Available!</h3>
         </div>
     }
-    return <section className="p-10">
+    return <section className="p-10 ">
         <div className="grid grid-cols-4 gap-5">
             {posts?.map((post, key) => {
                 return <PostCard post={post} key={key} />
